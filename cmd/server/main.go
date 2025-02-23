@@ -1,19 +1,26 @@
 package main
 
 import (
-	delivery "bookApi/internal/delivery/http"
+	"bookApi/internal/database"
+	"bookApi/internal/handler"
 	"bookApi/internal/repository"
-	"bookApi/internal/usecase"
 
 	"github.com/labstack/echo"
 )
 
 func main() {
+	db := database.InitDB()
+	database.ApplyMigrations(db)
+
+	repo := repository.NewBookRepository(db)
+	bookHandler := handler.NewBookHandler(repo)
+
 	e := echo.New()
+	e.GET("/books", bookHandler.GetBooks)
+	e.GET("/books/:id", bookHandler.GetBook)
+	e.POST("/books", bookHandler.CreateBook)
+	e.PUT("/books/:id", bookHandler.UpdateBook)
+	e.DELETE("/books/:id", bookHandler.DeleteBook)
 
-    repo := repository.NewBookMemoryRepo()
-    useCase := usecase.NewBookUseCase(repo)
-    delivery.NewBookHandler(e, useCase)
-
-    e.Logger.Fatal(e.Start(":8080"))
+	e.Start(":8080")
 }
