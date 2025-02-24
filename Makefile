@@ -22,3 +22,5 @@ migrate-down:
 migrate-create:
 	goose -dir migrations create $(name) sql
 
+test:
+	go test ./... -cover

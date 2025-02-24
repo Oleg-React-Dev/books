@@ -10,10 +10,10 @@ import (
 )
 
 type BookHandler struct {
-	repo *repository.BookRepository
+	repo repository.BookRepository
 }
 
-func NewBookHandler(repo *repository.BookRepository) *BookHandler {
+func NewBookHandler(repo repository.BookRepository) *BookHandler {
 	return &BookHandler{repo}
 }
 
@@ -60,7 +60,6 @@ func (h *BookHandler) UpdateBook(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, book)
 }
-
 
 func (h *BookHandler) DeleteBook(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
