@@ -24,3 +24,8 @@ migrate-create:
 
 test:
 	go test ./... -cover
+
+.PHONY: build run start
+
+start:
+	go build -o bin/app ./cmd/server && ./bin/app

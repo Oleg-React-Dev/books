@@ -5,7 +5,10 @@ import (
 	"bookApi/internal/handler"
 	"bookApi/internal/repository"
 
-	"github.com/labstack/echo"
+	_ "bookApi/docs"
+
+	"github.com/labstack/echo/v4"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 func main() {
@@ -16,6 +19,7 @@ func main() {
 	bookHandler := handler.NewBookHandler(repo)
 
 	e := echo.New()
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.GET("/books", bookHandler.GetBooks)
 	e.GET("/books/:id", bookHandler.GetBook)
 	e.POST("/books", bookHandler.CreateBook)

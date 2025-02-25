@@ -1,0 +1,155 @@
+definitions:
+  bookApi_internal_models.Book:
+    properties:
+      author:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+      year:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /books:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает все книги из базы данных
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список книг
+          schema:
+            items:
+              $ref: '#/definitions/bookApi_internal_models.Book'
+            type: array
+        "500":
+          description: Ошибка сервера
+          schema:
+            type: string
+      summary: Получить список книг
+      tags:
+      - Books
+    post:
+      consumes:
+      - application/json
+      description: Добавляет новую книгу в базу данных
+      parameters:
+      - description: Данные книги
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/bookApi_internal_models.Book'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Созданная книга
+          schema:
+            $ref: '#/definitions/bookApi_internal_models.Book'
+        "400":
+          description: Ошибка валидации данных
+          schema:
+            type: string
+        "500":
+          description: Ошибка сервера
+          schema:
+            type: string
+      summary: Создать новую книгу
+      tags:
+      - Books
+  /books/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет книгу по её уникальному идентификатору
+      parameters:
+      - description: ID книги
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Книга успешно удалена
+        "500":
+          description: Ошибка сервера
+          schema:
+            type: string
+      summary: Удалить книгу
+      tags:
+      - Books
+    get:
+      consumes:
+      - application/json
+      description: Возвращает книгу по её уникальному идентификатору
+      parameters:
+      - description: ID книги
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Найденная книга
+          schema:
+            $ref: '#/definitions/bookApi_internal_models.Book'
+        "404":
+          description: Книга не найдена
+          schema:
+            type: string
+        "500":
+          description: Ошибка сервера
+          schema:
+            type: string
+      summary: Получить книгу по ID
+      tags:
+      - Books
+    put:
+      consumes:
+      - application/json
+      description: Обновляет данные существующей книги по её ID
+      parameters:
+      - description: ID книги
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Обновлённые данные книги
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/bookApi_internal_models.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Обновлённая книга
+          schema:
+            $ref: '#/definitions/bookApi_internal_models.Book'
+        "400":
+          description: Ошибка валидации данных
+          schema:
+            type: string
+        "500":
+          description: Ошибка сервера
+          schema:
+            type: string
+      summary: Обновить книгу
+      tags:
+      - Books
+swagger: "2.0"

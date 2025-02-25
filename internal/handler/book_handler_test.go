@@ -10,10 +10,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"gorm.io/gorm"
 )
 
 type MockBookRepository struct {
@@ -59,8 +58,8 @@ func TestGetBooks(t *testing.T) {
 	handler := NewBookHandler(mockRepo)
 
 	expectedBooks := []models.Book{
-		{Model: gorm.Model{ID: 1}, Title: "Book 1", Author: "Author 1"},
-		{Model: gorm.Model{ID: 2}, Title: "Book 2", Author: "Author 2"},
+		{ID: 1, Title: "Book 1", Author: "Author 1"},
+		{ID: 2, Title: "Book 2", Author: "Author 2"},
 	}
 
 	mockRepo.On("GetAll").Return(expectedBooks, nil)
@@ -87,7 +86,7 @@ func TestGetBook(t *testing.T) {
 	mockRepo := new(MockBookRepository)
 	handler := NewBookHandler(mockRepo)
 
-	expectedBook := models.Book{Model: gorm.Model{ID: 1}, Title: "Book 1", Author: "Author 1"}
+	expectedBook := models.Book{ID: 1, Title: "Book 1", Author: "Author 1"}
 	mockRepo.On("GetByID", uint(1)).Return(&expectedBook, nil)
 
 	err := handler.GetBook(c)
@@ -150,7 +149,7 @@ func TestCreateBook(t *testing.T) {
 
 func TestUpdateBook(t *testing.T) {
 	e := echo.New()
-	book := models.Book{Model: gorm.Model{ID: 1}, Title: "Updated Title", Author: "Updated Author"}
+	book := models.Book{ID: 1, Title: "Updated Title", Author: "Updated Author"}
 	bookJSON, _ := json.Marshal(book)
 
 	req := httptest.NewRequest(http.MethodPut, "/books/1", bytes.NewBuffer(bookJSON))

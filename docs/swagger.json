@@ -1,0 +1,237 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/books": {
+            "get": {
+                "description": "Возвращает все книги из базы данных",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Получить список книг",
+                "responses": {
+                    "200": {
+                        "description": "Список книг",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/bookApi_internal_models.Book"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Добавляет новую книгу в базу данных",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Создать новую книгу",
+                "parameters": [
+                    {
+                        "description": "Данные книги",
+                        "name": "book",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/bookApi_internal_models.Book"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Созданная книга",
+                        "schema": {
+                            "$ref": "#/definitions/bookApi_internal_models.Book"
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка валидации данных",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/books/{id}": {
+            "get": {
+                "description": "Возвращает книгу по её уникальному идентификатору",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Получить книгу по ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID книги",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Найденная книга",
+                        "schema": {
+                            "$ref": "#/definitions/bookApi_internal_models.Book"
+                        }
+                    },
+                    "404": {
+                        "description": "Книга не найдена",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Обновляет данные существующей книги по её ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Обновить книгу",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID книги",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Обновлённые данные книги",
+                        "name": "book",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/bookApi_internal_models.Book"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Обновлённая книга",
+                        "schema": {
+                            "$ref": "#/definitions/bookApi_internal_models.Book"
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка валидации данных",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Удаляет книгу по её уникальному идентификатору",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Удалить книгу",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID книги",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Книга успешно удалена"
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "bookApi_internal_models.Book": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

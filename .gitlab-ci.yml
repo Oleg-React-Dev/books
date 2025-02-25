@@ -1,0 +1,39 @@
+stages:
+  - build
+  - test
+
+variables:
+  DATABASE_URL: "postgres://user:password@db:5432/bookdb?sslmode=disable"
+
+before_script:
+  - go mod tidy
+  - go install github.com/pressly/goose/v3/cmd/goose@latest
+  - go install github.com/swaggo/swag/cmd/swag@latest
+
+build:
+  stage: build
+  image: golang:1.22
+  script:
+    - swag init -g cmd/server/main.go
+    - go build -o app ./cmd/server
+  artifacts:
+    paths:
+      - app
+      - docs/
+
+test:
+  stage: test
+  image: golang:1.21
+  script:
+    - go test ./... -cover
+
+deploy:
+  stage: deploy
+  image: alpine
+  before_script:
+    - apk add --no-cache openssh-client
+  script:
+    - scp app user@server:/home/user/book-api
+    - ssh user@server "systemctl restart book-api"
+  only:
+    - main
